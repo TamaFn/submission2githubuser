@@ -4,15 +4,22 @@
 
     <group android:menuCategory="container">
         <item
+            android:id="@+id/deleteall"
+            android:title="Delete All Favorite"
+            android:icon="@drawable/baseline_delete_24"
+            app:iconTint="@color/iconColor2"
+            app:showAsAction="always" />
+        <item
             android:id="@+id/favorite"
             android:title="Favorite"
             android:icon="@drawable/baseline_bookmark_24"
-            app:iconTint="@color/iconColor1"
+            app:iconTint="@color/iconColor2"
             app:showAsAction="ifRoom" />
         <item
             android:id="@+id/darktheme"
             android:title="Darktheme"
             android:icon="@drawable/baseline_settings_24"
+            app:iconTint="@color/iconColor2"
             app:showAsAction="always" />
     </group>
 </menu>

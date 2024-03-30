@@ -1,17 +1,19 @@
 package com.example.submission1githubuser.model
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.submission1githubuser.BuildConfig
+import com.example.submission1githubuser.data.repository.UserRepository
 import com.example.submission1githubuser.data.response.DetailUser
 import com.example.submission1githubuser.data.response.GithubUser
-import com.example.submission1githubuser.ui.MainActivity
 import com.example.submission1githubuser.data.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Response
 
-class DetailViewModel : ViewModel() {
+class DetailViewModel(mAppk: Application) : ViewModel() {
 
     private val _detailuser = MutableLiveData<DetailUser>()
     val detailuser: LiveData<DetailUser> = _detailuser
@@ -31,6 +33,18 @@ class DetailViewModel : ViewModel() {
     private val _isLoadingFollowing = MutableLiveData<Boolean>()
     val isLoadingFollowing: LiveData<Boolean> = _isLoadingFollowing
 
+    private val UserData: UserRepository = UserRepository(mAppk)
+
+    fun getAllUsers(): LiveData<List<GithubUser>> = UserData.getAllData()
+    fun insertDataUser(user: GithubUser) {
+        UserData.insertUser(user)
+    }
+
+    fun deleteDataUser(user: GithubUser) {
+        UserData.deleteUser(user)
+    }
+
+
     var userlogin: String = ""
         set(value) {
             field = value
@@ -41,7 +55,7 @@ class DetailViewModel : ViewModel() {
 
     private fun getDetailUser() {
         _isLoading.value = true
-        val api = ApiConfig.getApiService().getDetailUser(userlogin, MainActivity.APICode)
+        val api = ApiConfig.getApiService().getDetailUser(userlogin, BuildConfig.KEY)
         api.enqueue(object : retrofit2.Callback<DetailUser> {
             override fun onResponse(call: Call<DetailUser>, response: Response<DetailUser>) {
                 _isLoading.value = false
@@ -63,7 +77,7 @@ class DetailViewModel : ViewModel() {
 
     private fun getDetailUserFollowers() {
         _isLoadingFollower.value = true
-        val api = ApiConfig.getApiService().getAllFollowers(userlogin, MainActivity.APICode)
+        val api = ApiConfig.getApiService().getAllFollowers(userlogin, BuildConfig.KEY)
         api.enqueue(object : retrofit2.Callback<List<GithubUser>> {
             override fun onResponse(
                 call: Call<List<GithubUser>>,
@@ -88,7 +102,7 @@ class DetailViewModel : ViewModel() {
 
     private fun getDetailUserFollowings() {
         _isLoadingFollowing.value = true
-        val api = ApiConfig.getApiService().getAllFollowings(userlogin, MainActivity.APICode)
+        val api = ApiConfig.getApiService().getAllFollowings(userlogin, BuildConfig.KEY)
         api.enqueue(object : retrofit2.Callback<List<GithubUser>> {
             override fun onResponse(
                 call: Call<List<GithubUser>>,

@@ -18,7 +18,7 @@
     <string name="followers">Followers</string>
     <string name="followings">Followings</string>
     <string name="https_github_com_firefly">https://github.com/firefly</string>
-    <string name="firefly">FireFly</string>
+    <string name="UsernameDetail">FireFly</string>
     <string name="repositorys">Repository</string>
     <string name="countfollower">30</string>
     <string name="countrepo">30</string>
@@ -26,4 +26,20 @@
     <string name="hint">Masukkan Username</string>
 
     <string name="favoriteactivity">Activity Favorite</string>
+    <string name="FavoriteIcon">My Favorite\n</string>
+    <string name="userFavoriteNone">Belum Ada Akun Yang Difavoritekan\n</string>
+    <string name="OnMode">Night Mode On\n</string>
+    <string name="nightmode">Setting Night Mode\n</string>
+    <string name="undo">Undo</string>
+    <string name="deleteFromFav">Is Deleted From Favorite\n</string>
+    <string name="addToFav">Is Added To Favorite</string>
+    <string name="seeFavorite">See Favorite</string>
+    <string name="favoriteUser">Favorite User</string>
+    <string name="setting">Setting Dark Theme\n</string>
+    <string name="OffMode">Night Mode Off</string>
+    <string name="icon_favorite">Add Favorite</string>
+
+    <string name="favorite_remove">Removed from favorites</string>
+    <string name="favorite_add">Added to favorites</string>
+
 </resources>

@@ -16,7 +16,7 @@ class UsersAdapter(private val listUsers: List<GithubUser>) :
     private var onItemClickCallback: OnItemClickCallback? = null
 
     fun setOnItemClickCallback(callback: OnItemClickCallback) {
-        onItemClickCallback = callback
+        this.onItemClickCallback = callback
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) = ViewHolder(

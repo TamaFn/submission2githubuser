@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Screen"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-black"
-            android:text="@string/firefly"
+            android:text="@string/UsernameDetail"
             android:textColor="@color/color_detail"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,13 +51,13 @@
             app:layout_constraintTop_toBottomOf="@id/urlUser">
 
             <TextView
-                android:id="@+id/countFollowingView"
+                android:id="@+id/countRepoView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
-                android:text="@string/countfollowing"
+                android:text="@string/countrepo"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
                 app:drawableTint="?attr/colorControlNormal" />
@@ -74,16 +75,17 @@
                 app:drawableTint="?attr/colorControlNormal" />
 
             <TextView
-                android:id="@+id/countRepoView"
+                android:id="@+id/countFollowingView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
-                android:text="@string/countrepo"
+                android:text="@string/countfollowing"
                 android:textColor="@color/purple"
                 android:textSize="16sp"
                 app:drawableTint="?attr/colorControlNormal" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +105,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="@string/repositorys"
-                android:textColor="@color/black"
+                android:textColor="@color/usernameColor"
                 android:textSize="16sp"
                 app:drawableTint="?attr/colorControlNormal" />
 
@@ -116,7 +118,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="@string/followers"
-                android:textColor="@color/black"
+                android:textColor="@color/usernameColor"
                 android:textSize="16sp"
                 app:drawableTint="?attr/colorControlNormal" />
 
@@ -128,7 +130,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="@string/followings"
-                android:textColor="@color/black"
+                android:textColor="@color/usernameColor"
                 android:textSize="16sp"
                 app:drawableTint="?attr/colorControlNormal" />
 
@@ -161,25 +163,60 @@
             app:layout_constraintVertical_bias="0.747"
             tools:visibility="visible" />
 
+<!--        <ImageView-->
+<!--            android:id="@+id/btnFavorite"-->
+<!--            android:layout_width="32dp"-->
+<!--            android:layout_height="34dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:srcCompat="@drawable/ic_favorite_border" />-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/white"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/black"
-        app:tabTextColor="@color/colorTextSecondary" />
+        android:layout_height="match_parent">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorColor="@color/purple_200"
+            app:tabSelectedTextColor="#F47D7D"
+            app:tabBackground="@color/floatingbutton"
+            app:tabTextColor="@color/tablayouttext" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            app:backgroundTint="@color/floatingbutton"
+            app:tint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/baseline_favorite_border_24" />
 
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="@+id/tabs"
-        app:layout_constraintStart_toStartOf="@+id/tabs"
-        app:layout_constraintTop_toBottomOf="@+id/tabs" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </LinearLayout>

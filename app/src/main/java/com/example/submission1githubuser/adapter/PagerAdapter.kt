@@ -3,10 +3,10 @@ package com.example.submission1githubuser.adapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.submission1githubuser.ui.FollowersFragment
-import com.example.submission1githubuser.ui.FollowingsFragment
+import com.example.submission1githubuser.ui.Fragment.FollowersFragment
+import com.example.submission1githubuser.ui.Fragment.FollowingsFragment
 
-class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+class PagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
 
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null

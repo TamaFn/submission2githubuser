@@ -1,4 +1,4 @@
-package com.example.submission1githubuser.ui
+package com.example.submission1githubuser.ui.Activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.ProgressBar
 import com.example.submission1githubuser.R
+import com.example.submission1githubuser.ui.MainActivity
 
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

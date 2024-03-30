@@ -1,4 +1,4 @@
-package com.example.submission1githubuser.ui
+package com.example.submission1githubuser.ui.Fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,55 +10,54 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.submission1githubuser.data.response.GithubUser
 import com.example.submission1githubuser.adapter.UsersAdapter
-import com.example.submission1githubuser.databinding.FragmentFollowingsBinding
+import com.example.submission1githubuser.databinding.FragmentFollowersBinding
 import com.example.submission1githubuser.model.DetailViewModel
 
-class FollowingsFragment : Fragment() {
+class FollowersFragment : Fragment() {
 
-    private lateinit var binding: FragmentFollowingsBinding
+    private lateinit var binding: FragmentFollowersBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentFollowingsBinding.inflate(inflater, container, false)
+        binding = FragmentFollowersBinding.inflate(inflater, container, false)
 
         val layoutManager = LinearLayoutManager(context)
-        binding.rvFollowings.layoutManager = layoutManager
+        binding.rvFollowers.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
-        binding.rvFollowings.addItemDecoration(itemDecoration)
+        binding.rvFollowers.addItemDecoration(itemDecoration)
 
         val detailViewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
 
-        detailViewModel.allfollowings.observe(viewLifecycleOwner, {
-            setUserFollowingData(it)
+        detailViewModel.allfollowers.observe(viewLifecycleOwner, {
+            setUserFollowerData(it)
         })
 
-        detailViewModel.isLoadingFollowing.observe(viewLifecycleOwner, {
+        detailViewModel.isLoadingFollower.observe(viewLifecycleOwner, {
             showLoading(it)
         })
 
         return binding.root
     }
 
-
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.followingNone.visibility = View.GONE
-            binding.progressBarFollowing.visibility = View.VISIBLE
-            binding.rvFollowings.alpha = 0.0F
+            binding.followersNone.visibility = View.GONE
+            binding.progressBarFollower.visibility = View.VISIBLE
+            binding.rvFollowers.alpha = 0.0F
         } else {
-            binding.progressBarFollowing.visibility = View.GONE
-            binding.rvFollowings.alpha = 1F
+            binding.progressBarFollower.visibility = View.GONE
+            binding.rvFollowers.alpha = 1F
         }
     }
 
-    private fun setUserFollowingData(user: List<GithubUser>) {
-        binding.followingNone.visibility = if (user.isEmpty()) View.VISIBLE else View.GONE
-        binding.rvFollowings.apply {
-            binding.rvFollowings.layoutManager = LinearLayoutManager(context)
+    private fun setUserFollowerData(user: List<GithubUser>) {
+        binding.followersNone.visibility = if (user.isEmpty()) View.VISIBLE else View.GONE
+        binding.rvFollowers.apply {
+            binding.rvFollowers.layoutManager = LinearLayoutManager(context)
             val listUserAdapter = UsersAdapter(user)
-            binding.rvFollowings.adapter = listUserAdapter
+            binding.rvFollowers.adapter = listUserAdapter
 
             listUserAdapter.setOnItemClickCallback(object : UsersAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: GithubUser) {
@@ -70,4 +69,5 @@ class FollowingsFragment : Fragment() {
             })
         }
     }
+
 }

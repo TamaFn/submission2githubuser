@@ -26,20 +26,15 @@
     <color name="darkTextPrimary">#FFFFFF</color>
     <color name="darkTextSecondary">#BDBDBD</color>
     <color name="darkSurface">#212121</color>
-    <color name="cardBackgroundColor">#FFFFFF</color>
-    <color name="usernameColor">#000000</color>
+    <color name="cardBackgroundColor">#2B2B2B</color>
+    <color name="usernameColor">#ffffff</color>
     <color name="iconColor1">#000000</color>
-    <color name="iconColor2">#000000</color>
+    <color name="iconColor2">#FFFFFF</color>
     <color name="iconColor3">#FFFFFF</color>
-    <color name="tablayoutcolor">#FFFFFF</color>
-    <color name="tablayouttext">#FFFFFF</color>
+    <color name="tablayoutcolor">#9932CC</color>
     <color name="floatingbutton">#8A2BE2</color>
     <color name="githubUrl">#9932CC</color>
-    <color name="SearchBar">#EDEDED</color>
+    <color name="tablayouttext">#FFFFFF</color>
+    <color name="SearchBar">#FFFFFF</color>
     <color name="SearchView">#C1C1C1</color>
-
-
 </resources>
-
-
-

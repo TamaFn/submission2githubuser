@@ -1,0 +1,165 @@
+package com.example.submission1githubuser.ui.Activity
+
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.submission1githubuser.data.response.GithubUser
+import com.example.submission1githubuser.R
+import com.example.submission1githubuser.adapter.PagerAdapter
+import com.google.android.material.tabs.TabLayoutMediator
+import com.example.submission1githubuser.databinding.ActivityDetailBinding
+import com.example.submission1githubuser.model.DetailViewModel
+import com.example.submission1githubuser.model.FavoriteViewModelFactory
+
+class DetailActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityDetailBinding
+    private lateinit var detailViewModel: DetailViewModel
+    private lateinit var username: String
+    private var isFavorite: Boolean = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+//      Action Bar Setting
+        supportActionBar?.title = "User Detail"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        detailViewModel = obtainViewModel(this)
+
+        val user = intent.getParcelableExtra<GithubUser>(EXTRA_USER) as GithubUser
+        detailViewModel.userlogin = user.login
+
+//        username = user.login
+
+
+        detailViewModel.detailuser.observe(this) {
+            binding.apply{
+                binding.nameView.text = it.name ?: " - "
+                binding.countRepoView.text = it.publicRepos ?: " - "
+                binding.urlUser.text = it.htmlUrl ?: " - "
+                binding.countFollowersView.text = it.followers
+                binding.countFollowingView.text = it.following
+                Glide.with(this@DetailActivity)
+                    .load(it.avatarUrl)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .into(binding.imgAvatar)
+            }
+        }
+        detailViewModel.isLoading.observe(this) { reload ->
+            if (reload == true) {
+                binding.progressBar2.visibility = View.VISIBLE
+                binding.nameView.text = ""
+                binding.countRepoView.text = ""
+                binding.urlUser.text = ""
+                binding.countFollowersView.text = ""
+                binding.countFollowingView.text = ""
+                Glide.with(this@DetailActivity)
+                    .load(R.drawable.ic_launcher_foreground)
+                    .into(binding.imgAvatar)
+            } else {
+                binding.progressBar2.visibility = View.GONE
+            }
+        }
+
+        val pagerAdapter = PagerAdapter(this)
+        binding.viewPager.adapter = pagerAdapter
+
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            tab.text = resources.getString(TAB_TITLES[position])
+        }.attach()
+
+        binding.btnFavorite.setOnClickListener {
+            if (isFavorite) {
+                detailViewModel.deleteDataUser(user)
+                Toast.makeText(this, R.string.favorite_remove, Toast.LENGTH_SHORT).show()
+            } else {
+                detailViewModel.insertDataUser(user)
+                Toast.makeText(this, R.string.favorite_add, Toast.LENGTH_SHORT).show()
+            }
+            isFavorite = !isFavorite
+            updateFavoriteButtonUI()
+        }
+
+        detailViewModel.getAllUsers().observe(this) {
+            isFavorite = it.contains(user)
+            updateFavoriteButtonUI()
+        }
+
+    }
+
+//    Berfungsi Untuk Melakukan Update Icon
+    private fun updateFavoriteButtonUI() {
+        if (isFavorite) {
+            binding.btnFavorite.setImageResource(R.drawable.ic_favorite_red_24)
+        } else {
+            binding.btnFavorite.setImageResource(R.drawable.ic_favorite_border)
+        }
+    }
+
+    //   Berfungsi Untuk Menyalakan Fungsi Anak Panah Ke Home
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): DetailViewModel {
+        val factory = FavoriteViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[DetailViewModel::class.java]
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.search_detail_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.favorite -> {
+                val intent = Intent(this@DetailActivity, FavoriteActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
+            R.id.darktheme -> {
+                val intent = Intent(this@DetailActivity, DarkThemeActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.share -> {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "https://github.com/${username}"
+                    )
+                    type = "text/plain"
+                }
+                val openShareProfile = Intent.createChooser(sendIntent, null)
+                startActivity(openShareProfile)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+    companion object {
+        const val EXTRA_USER = "extra_user"
+
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
+    }
+}

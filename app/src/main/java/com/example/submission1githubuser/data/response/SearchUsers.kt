@@ -1,6 +1,9 @@
 package com.example.submission1githubuser.data.response
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -16,19 +19,24 @@ data class SearchUsers(
 	val items: List<GithubUser>
 )
 
+@Entity
 @Parcelize
 data class GithubUser(
 
+	@PrimaryKey
 	@field:SerializedName("login")
-	val login: String? = null,
+	@ColumnInfo("login")
+	val login: String,  // Provide a non-null default value or remove the annotation
 
+	@ColumnInfo("avatar_url")
 	@field:SerializedName("avatar_url")
 	val avatarUrl: String? = null,
 
+	@ColumnInfo
 	@field:SerializedName("html_url")
-	val htmlUrl: String? = null,
+	val htmlUrl: String? = null
+) : Parcelable
 
-	) : Parcelable
 
 data class DetailUser(
 
