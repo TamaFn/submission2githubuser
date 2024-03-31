@@ -16,34 +16,28 @@ import com.example.submission1githubuser.data.response.GithubUser
 import com.example.submission1githubuser.databinding.ActivityFavoriteBinding
 import com.example.submission1githubuser.model.FavoriteViewModel
 import com.example.submission1githubuser.model.FavoriteViewModelFactory
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class FavoriteActivity : AppCompatActivity() {
-    private var _activityFavUserBinding: ActivityFavoriteBinding? = null
-    private val binding get() = _activityFavUserBinding
-    private lateinit var viewModel: FavoriteViewModel
+    private lateinit var binding: ActivityFavoriteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        _activityFavUserBinding = ActivityFavoriteBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        binding = ActivityFavoriteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-
         actionBar?.title = resources.getString(R.string.favoriteUser)
 
-        binding?.rvUsersFavorite?.layoutManager = LinearLayoutManager(this)
-        binding?.rvUsersFavorite?.setHasFixedSize(true)
+        binding.rvFavorite.layoutManager = LinearLayoutManager(this)
+        binding.rvFavorite.setHasFixedSize(true)
 
         val favoriteUserViewModel = obtainViewModel(this)
 
-        favoriteUserViewModel.getAllUsers().observe(this) { userList ->
-            if (userList.isNotEmpty()) {
-                val adapter = UsersAdapter(userList)
-                binding?.rvUsersFavorite?.adapter = adapter
-
+        favoriteUserViewModel.getAllUsers().observe(this) { list ->
+            if (list.isNotEmpty()) {
+                val adapter = UsersAdapter(list)
+                binding.rvFavorite.adapter = adapter
                 adapter.setOnItemClickCallback(object : UsersAdapter.OnItemClickCallback {
                     override fun onItemClicked(data: GithubUser) {
                         val intent = Intent(this@FavoriteActivity, DetailActivity::class.java)
@@ -51,32 +45,28 @@ class FavoriteActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                 })
-
             } else {
-                binding?.rvUsersFavorite?.visibility = View.GONE
-                binding?.tvNonedata?.visibility = View.VISIBLE
+                binding.rvFavorite.visibility = View.GONE
+                binding.tvNonedata.visibility = View.VISIBLE
             }
         }
     }
 
-    //   Berfungsi Untuk Menyalakan Fungsi Anak Panah Ke Home
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
     }
 
-    private fun obtainViewModel(activity: AppCompatActivity): FavoriteViewModel{
+    private fun obtainViewModel(activity: AppCompatActivity): FavoriteViewModel {
         val factory = FavoriteViewModelFactory.getInstance(activity.application)
         return ViewModelProvider(activity, factory)[FavoriteViewModel::class.java]
     }
 
-    //   Berfungsi Untuk Memanggil Fungsi Menu Option
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_favorite_menu, menu)
         return true
     }
 
-    // Berfungsi Untuk Option Memilih Menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.favorite -> {
@@ -109,5 +99,4 @@ class FavoriteActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }

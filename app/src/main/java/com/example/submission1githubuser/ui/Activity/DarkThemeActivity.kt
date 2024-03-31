@@ -29,29 +29,29 @@ class DarkThemeActivity : AppCompatActivity() {
             DarkThemeViewModelFactory(pref)
         )[DarkThemeViewModel::class.java]
 
-        settingViewModel.getThemeSettings().observe(this)
-        { isActive: Boolean ->
-            if (isActive) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                binding.switchbutton.isChecked = true
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                binding.switchbutton.isChecked = false
-            }
+        settingViewModel.getThemeSettings().observe(this) { isActive ->
+            updateTheme(isActive)
+            binding.switchbutton.isChecked = isActive
         }
 
-        binding.switchbutton.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+        binding.switchbutton.setOnCheckedChangeListener { _, isChecked ->
             updateCheckIndicator(isChecked)
             settingViewModel.saveThemeSetting(isChecked)
         }
     }
+
+    private fun updateTheme(isActive: Boolean) {
+        val mode = if (isActive) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        AppCompatDelegate.setDefaultNightMode(mode)
+    }
+
     private fun updateCheckIndicator(isChecked: Boolean) {
         binding.CheckIndicator.text = if (isChecked) resources.getString(R.string.OnMode) else resources.getString(R.string.OffMode)
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
     }
 }
+

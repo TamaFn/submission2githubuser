@@ -32,11 +32,11 @@ class FollowersFragment : Fragment() {
 
         val detailViewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
 
-        detailViewModel.allfollowers.observe(viewLifecycleOwner) {
+        detailViewModel.userfollowers.observe(viewLifecycleOwner) {
             setUserFollowerData(it)
         }
 
-        detailViewModel.isLoadingFollower.observe(viewLifecycleOwner) {
+        detailViewModel.isLoadingUserFollower.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 

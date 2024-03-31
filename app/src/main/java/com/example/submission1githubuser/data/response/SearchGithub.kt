@@ -59,5 +59,22 @@ data class DetailUser(
 	var following: String,
 
 	@SerializedName("avatar_url")
-	var avatarUrl: String
+	var avatarUrl: String,
+
+	@field:SerializedName("site_admin")
+	val siteAdmin: Boolean? = null,
+
+	@field:SerializedName("id")
+	val id: Int? = null,
+
+	@field:SerializedName("gravatar_id")
+	val gravatarId: String? = null,
+
+	@field:SerializedName("node_id")
+	val nodeId: String? = null,
+
+	@field:SerializedName("organizations_url")
+	val organizationsUrl: String? = null
+
+
 )

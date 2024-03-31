@@ -39,39 +39,40 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.setUserLogin(user.login)
 
 
-        detailViewModel.detailuser.observe(this) {
-            binding.apply{
-                binding.nameView.text = it.name ?: " - "
-                binding.countRepoView.text = it.publicRepos ?: " - "
-                binding.urlUser.text = it.htmlUrl ?: " - "
-                binding.countFollowersView.text = it.followers
-                binding.countFollowingView.text = it.following
+        detailViewModel.datauser.observe(this) { user ->
+            with(binding) {
+                nameView.text = user.name
+                countRepoView.text = user.publicRepos
+                urlUser.text = user.htmlUrl ?: " - "
+                countFollowersView.text = user.followers
+                countFollowingView.text = user.following
                 Glide.with(this@DetailActivity)
-                    .load(it.avatarUrl)
+                    .load(user.avatarUrl)
                     .placeholder(R.drawable.ic_launcher_foreground)
-                    .into(binding.imgAvatar)
-            }
-        }
-        detailViewModel.isLoading.observe(this) { reload ->
-            if (reload == true) {
-                binding.progressBar2.visibility = View.VISIBLE
-                binding.nameView.text = ""
-                binding.countRepoView.text = ""
-                binding.urlUser.text = ""
-                binding.countFollowersView.text = ""
-                binding.countFollowingView.text = ""
-                Glide.with(this@DetailActivity)
-                    .load(R.drawable.ic_launcher_foreground)
-                    .into(binding.imgAvatar)
-            } else {
-                binding.progressBar2.visibility = View.GONE
+                    .into(imgAvatar)
             }
         }
 
+        detailViewModel.isLoading.observe(this) { isLoading ->
+            with(binding) {
+                progressBar2.visibility = if (isLoading) View.VISIBLE else View.GONE
+                if (isLoading) {
+                    nameView.text = ""
+                    countRepoView.text = ""
+                    urlUser.text = ""
+                    countFollowersView.text = ""
+                    countFollowingView.text = ""
+                    Glide.with(this@DetailActivity)
+                        .load(R.drawable.ic_launcher_foreground)
+                        .into(imgAvatar)
+                }
+            }
+        }
+
+
+        //      Pemanggilan PagerAdapter
         val pagerAdapter = PagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
-
-//      Pemanggilan PagerAdapter
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()

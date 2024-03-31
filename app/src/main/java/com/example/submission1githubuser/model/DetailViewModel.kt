@@ -5,35 +5,32 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.submission1githubuser.BuildConfig
 import com.example.submission1githubuser.data.repository.UserRepository
 import com.example.submission1githubuser.data.response.DetailUser
 import com.example.submission1githubuser.data.response.GithubUser
 import com.example.submission1githubuser.data.retrofit.ApiConfig
-import com.example.submission1githubuser.ui.Activity.DetailActivity.Companion.EXTRA_USER
 import retrofit2.Call
 import retrofit2.Response
 
 class DetailViewModel(mAppk: Application) : ViewModel() {
 
-    private val _detailuser = MutableLiveData<DetailUser>()
-    val detailuser: LiveData<DetailUser> = _detailuser
+    private val _datauser = MutableLiveData<DetailUser>()
+    val datauser: LiveData<DetailUser> = _datauser
 
-    private val _allfollowers = MutableLiveData<List<GithubUser>>()
-    val allfollowers: LiveData<List<GithubUser>> = _allfollowers
+    private val _userfollowers = MutableLiveData<List<GithubUser>>()
+    val userfollowers: LiveData<List<GithubUser>> = _userfollowers
 
-    private val _allfollowings = MutableLiveData<List<GithubUser>>()
-    val allfollowings: LiveData<List<GithubUser>> = _allfollowings
+    private val _userfollowings = MutableLiveData<List<GithubUser>>()
+    val userfollowings: LiveData<List<GithubUser>> = _userfollowings
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isLoadingFollower = MutableLiveData<Boolean>()
-    val isLoadingFollower: LiveData<Boolean> = _isLoadingFollower
+    private val _isLoadingUserFollower = MutableLiveData<Boolean>()
+    val isLoadingUserFollower: LiveData<Boolean> = _isLoadingUserFollower
 
-    private val _isLoadingFollowing = MutableLiveData<Boolean>()
-    val isLoadingFollowing: LiveData<Boolean> = _isLoadingFollowing
+    private val _isLoadingUserFollowing = MutableLiveData<Boolean>()
+    val isLoadingUserFollowing: LiveData<Boolean> = _isLoadingUserFollowing
 
     private val UserData: UserRepository = UserRepository(mAppk)
 
@@ -48,13 +45,17 @@ class DetailViewModel(mAppk: Application) : ViewModel() {
 
 
     fun setUserLogin(userLogin: String) {
-        getDetailUser(userLogin)
-        getDetailUserFollowers(userLogin)
-        getDetailUserFollowings(userLogin)
+        getUser(userLogin)
+        getUserFollowers(userLogin)
+        getUserFollowings(userLogin)
+    }
+
+    companion object {
+        private const val TAG = "DetailViewModel"
     }
 
 
-    private fun getDetailUser(userLogin: String) {
+    private fun getUser(userLogin: String) {
         _isLoading.value = true
         val api = ApiConfig.getApiService().getDetailUser(userLogin)
         api.enqueue(object : retrofit2.Callback<DetailUser> {
@@ -62,7 +63,7 @@ class DetailViewModel(mAppk: Application) : ViewModel() {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    _detailuser.value = responseBody!!
+                    _datauser.value = responseBody!!
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
@@ -75,56 +76,52 @@ class DetailViewModel(mAppk: Application) : ViewModel() {
         })
     }
 
-    private fun getDetailUserFollowers(userLogin: String) {
-        _isLoadingFollower.value = true
+    private fun getUserFollowers(userLogin: String) {
+        _isLoadingUserFollower.value = true
         val api = ApiConfig.getApiService().getAllFollowers(userLogin)
         api.enqueue(object : retrofit2.Callback<List<GithubUser>> {
             override fun onResponse(
                 call: Call<List<GithubUser>>,
                 response: Response<List<GithubUser>>
             ) {
-                _isLoadingFollower.value = false
+                _isLoadingUserFollower.value = false
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    _allfollowers.value = responseBody!!
+                    _userfollowers.value = responseBody!!
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<List<GithubUser>>, t: Throwable) {
-                _isLoadingFollower.value = false
+                _isLoadingUserFollower.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })
     }
 
-    private fun getDetailUserFollowings(userLogin: String) {
-        _isLoadingFollowing.value = true
+    private fun getUserFollowings(userLogin: String) {
+        _isLoadingUserFollowing.value = true
         val api = ApiConfig.getApiService().getAllFollowings(userLogin)
         api.enqueue(object : retrofit2.Callback<List<GithubUser>> {
             override fun onResponse(
                 call: Call<List<GithubUser>>,
                 response: Response<List<GithubUser>>
             ) {
-                _isLoadingFollowing.value = false
+                _isLoadingUserFollowing.value = false
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    _allfollowings.value = responseBody!!
+                    _userfollowings.value = responseBody!!
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<List<GithubUser>>, t: Throwable) {
-                _isLoadingFollowing.value = false
+                _isLoadingUserFollowing.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })
     }
 
-
-    companion object {
-        private const val TAG = "DetailViewModel"
-    }
 }

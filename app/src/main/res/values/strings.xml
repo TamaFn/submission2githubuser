@@ -34,8 +34,8 @@
     <string name="deleteFromFav">Is Deleted From Favorite\n</string>
     <string name="addToFav">Is Added To Favorite</string>
     <string name="seeFavorite">See Favorite</string>
-    <string name="favoriteUser">Favorite User</string>
-    <string name="setting">Setting Dark Theme\n</string>
+    <string name="favoriteUser">Favorite</string>
+    <string name="setting">Dark Theme\n</string>
     <string name="OffMode">Night Mode Off</string>
     <string name="icon_favorite">Add Favorite</string>
 

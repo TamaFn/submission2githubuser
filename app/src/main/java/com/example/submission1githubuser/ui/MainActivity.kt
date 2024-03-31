@@ -23,21 +23,20 @@ import com.example.submission1githubuser.ui.Activity.FavoriteActivity
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter : UsersAdapter
-
-    private var dataUser = listOf<GithubUser>()
+    private var userdata = listOf<GithubUser>()
 
     companion object {
         const val TAG = "MainActivity"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//      Menhide ActionBar
         supportActionBar?.hide()
 
 //      Membuat Search Bar and Search View
@@ -85,9 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.user.observe(this) { user ->
             if (user != null) {
-                dataUser = user
-            }
-            if (user != null) {
+                userdata = user
                 binding.userNoneNotice.visibility = if (user.isEmpty()) View.VISIBLE else View.GONE
                 adapter = UsersAdapter(user)
                 binding.rvAdapter.adapter = adapter
@@ -97,7 +94,6 @@ class MainActivity : AppCompatActivity() {
                         intent.putExtra(DetailActivity.EXTRA_USER, data)
                         startActivity(intent)
                     }
-
                 })
             }
         }
@@ -116,10 +112,8 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra(DetailActivity.EXTRA_USER, data)
                     startActivity(intent)
                 }
-
             })
         }
-
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -142,8 +136,4 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
-
-
 }
