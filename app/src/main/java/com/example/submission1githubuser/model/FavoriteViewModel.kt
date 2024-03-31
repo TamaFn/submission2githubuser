@@ -1,6 +1,7 @@
 package com.example.submission1githubuser.model
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ class FavoriteViewModel(application: Application) : ViewModel() {
     fun getAllUsers(): LiveData<List<GithubUser>> = mUserRepo.getAllData()
 
     fun removeAllUsers() = mUserRepo.removeAllData()
+
 }
 
 class FavoriteViewModelFactory(private val mApp: Application) :
@@ -27,6 +29,7 @@ class FavoriteViewModelFactory(private val mApp: Application) :
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
+
     companion object {
         @Volatile
         private var INSTANCE: FavoriteViewModelFactory? = null
@@ -41,6 +44,4 @@ class FavoriteViewModelFactory(private val mApp: Application) :
             return INSTANCE as FavoriteViewModelFactory
         }
     }
-
-
 }

@@ -12,7 +12,7 @@ interface UserDao {
     @Delete
     fun delete(user: GithubUser)
 
-    @Query("SELECT * from GithubUser ORDER BY login ASC")
+    @Query("SELECT * from GithubUser ORDER BY login DESC")
     fun getAllDataUsers(): LiveData<List<GithubUser>>
 
     @Query("DELETE FROM GithubUser")

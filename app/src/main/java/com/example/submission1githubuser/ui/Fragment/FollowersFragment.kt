@@ -12,10 +12,12 @@ import com.example.submission1githubuser.data.response.GithubUser
 import com.example.submission1githubuser.adapter.UsersAdapter
 import com.example.submission1githubuser.databinding.FragmentFollowersBinding
 import com.example.submission1githubuser.model.DetailViewModel
+import com.example.submission1githubuser.ui.Activity.DetailActivity
 
 class FollowersFragment : Fragment() {
 
     private lateinit var binding: FragmentFollowersBinding
+    private lateinit var detailViewModel: DetailViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,13 +32,14 @@ class FollowersFragment : Fragment() {
 
         val detailViewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
 
-        detailViewModel.allfollowers.observe(viewLifecycleOwner, {
+        detailViewModel.allfollowers.observe(viewLifecycleOwner) {
             setUserFollowerData(it)
-        })
+        }
 
-        detailViewModel.isLoadingFollower.observe(viewLifecycleOwner, {
+        detailViewModel.isLoadingFollower.observe(viewLifecycleOwner) {
             showLoading(it)
-        })
+        }
+
 
         return binding.root
     }
@@ -64,7 +67,7 @@ class FollowersFragment : Fragment() {
                     val detailViewModel =
                         ViewModelProvider(requireActivity())[DetailViewModel::class.java]
 
-                    detailViewModel.userlogin = data.login.toString()
+                    detailViewModel.setUserLogin(data.login.toString())
                 }
             })
         }

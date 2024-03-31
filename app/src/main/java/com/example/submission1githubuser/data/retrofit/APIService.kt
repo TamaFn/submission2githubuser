@@ -19,25 +19,21 @@ interface APIService {
     @GET("search/users")
     fun getUserSearch(
         @Query("q") login: String,
-        @Header("Authorization") token: String
     ): Call<SearchUsers>
 
     @GET("users/{login}")
     fun getDetailUser(
         @Path("login") login: String,
-        @Header("Authorization") token: String
     ): Call<DetailUser>
 
     @GET("users/{login}/followers")
     fun getAllFollowers(
         @Path("login") login: String,
-        @Header("Authorization") token: String
     ): Call<List<GithubUser>>
 
     //memanggil list following
     @GET("users/{login}/following")
     fun getAllFollowings(
         @Path("login") login: String,
-        @Header("Authorization") token: String
     ): Call<List<GithubUser>>
 }

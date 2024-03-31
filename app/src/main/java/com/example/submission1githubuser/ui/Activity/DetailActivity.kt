@@ -36,9 +36,7 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel = obtainViewModel(this)
 
         val user = intent.getParcelableExtra<GithubUser>(EXTRA_USER) as GithubUser
-        detailViewModel.userlogin = user.login
-
-//        username = user.login
+        detailViewModel.setUserLogin(user.login)
 
 
         detailViewModel.detailuser.observe(this) {
@@ -73,10 +71,12 @@ class DetailActivity : AppCompatActivity() {
         val pagerAdapter = PagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
 
+//      Pemanggilan PagerAdapter
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
 
+//      Membuat Proses Penyimpanan Clickable Floating Button
         binding.btnFavorite.setOnClickListener {
             if (isFavorite) {
                 detailViewModel.deleteDataUser(user)
@@ -89,6 +89,7 @@ class DetailActivity : AppCompatActivity() {
             updateFavoriteButtonUI()
         }
 
+//      Melakukan Proses Update View UI
         detailViewModel.getAllUsers().observe(this) {
             isFavorite = it.contains(user)
             updateFavoriteButtonUI()
@@ -96,14 +97,29 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-//    Berfungsi Untuk Melakukan Update Icon
-    private fun updateFavoriteButtonUI() {
+    //    Berfungsi Untuk Melakukan Update Icon
+    fun updateFavoriteButtonUI() {
+        this.isFavorite = isFavorite
         if (isFavorite) {
             binding.btnFavorite.setImageResource(R.drawable.ic_favorite_red_24)
         } else {
             binding.btnFavorite.setImageResource(R.drawable.ic_favorite_border)
         }
     }
+
+    companion object {
+        const val EXTRA_USER = "extra_user"
+        const val EXTRA_AVATAR = "extra_avatar"
+        const val EXTRA_URL = "extra_url"
+
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
+    }
+
+
 
     //   Berfungsi Untuk Menyalakan Fungsi Anak Panah Ke Home
     override fun onSupportNavigateUp(): Boolean {
@@ -116,12 +132,13 @@ class DetailActivity : AppCompatActivity() {
         return ViewModelProvider(activity, factory)[DetailViewModel::class.java]
     }
 
-
+//  Membuat Menu Option
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_detail_menu, menu)
         return true
     }
 
+//  Membuat Selected Menu Option
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.favorite -> {
@@ -152,14 +169,4 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-
-    companion object {
-        const val EXTRA_USER = "extra_user"
-
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.tab_text_1,
-            R.string.tab_text_2
-        )
-    }
 }

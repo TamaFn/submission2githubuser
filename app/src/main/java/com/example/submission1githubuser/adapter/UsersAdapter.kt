@@ -19,6 +19,12 @@ class UsersAdapter(private val listUsers: List<GithubUser>) :
         this.onItemClickCallback = callback
     }
 
+    interface OnItemClickCallback {
+        fun onItemClicked(data: GithubUser)
+    }
+
+    override fun getItemCount(): Int = listUsers.size
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) = ViewHolder(
         LayoutInflater.from(viewGroup.context).inflate(R.layout.item_users, viewGroup, false)
     )
@@ -38,16 +44,12 @@ class UsersAdapter(private val listUsers: List<GithubUser>) :
         }
     }
 
-    override fun getItemCount(): Int = listUsers.size
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private var view: View) : RecyclerView.ViewHolder(view) {
         val usernameTextView: TextView = view.findViewById(R.id.usernameTextView)
         val avatarImageView: ImageView = view.findViewById(R.id.avatarImageView)
         val profileUrlTextView: TextView = view.findViewById(R.id.profileUrlTextView)
     }
 
-    interface OnItemClickCallback {
-        fun onItemClicked(data: GithubUser)
-    }
 }
 

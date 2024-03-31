@@ -5,11 +5,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.submission1githubuser.BuildConfig
 import com.example.submission1githubuser.data.repository.UserRepository
 import com.example.submission1githubuser.data.response.DetailUser
 import com.example.submission1githubuser.data.response.GithubUser
 import com.example.submission1githubuser.data.retrofit.ApiConfig
+import com.example.submission1githubuser.ui.Activity.DetailActivity.Companion.EXTRA_USER
 import retrofit2.Call
 import retrofit2.Response
 
@@ -45,17 +47,16 @@ class DetailViewModel(mAppk: Application) : ViewModel() {
     }
 
 
-    var userlogin: String = ""
-        set(value) {
-            field = value
-            getDetailUser()
-            getDetailUserFollowers()
-            getDetailUserFollowings()
-        }
+    fun setUserLogin(userLogin: String) {
+        getDetailUser(userLogin)
+        getDetailUserFollowers(userLogin)
+        getDetailUserFollowings(userLogin)
+    }
 
-    private fun getDetailUser() {
+
+    private fun getDetailUser(userLogin: String) {
         _isLoading.value = true
-        val api = ApiConfig.getApiService().getDetailUser(userlogin, BuildConfig.KEY)
+        val api = ApiConfig.getApiService().getDetailUser(userLogin)
         api.enqueue(object : retrofit2.Callback<DetailUser> {
             override fun onResponse(call: Call<DetailUser>, response: Response<DetailUser>) {
                 _isLoading.value = false
@@ -71,13 +72,12 @@ class DetailViewModel(mAppk: Application) : ViewModel() {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
-
         })
     }
 
-    private fun getDetailUserFollowers() {
+    private fun getDetailUserFollowers(userLogin: String) {
         _isLoadingFollower.value = true
-        val api = ApiConfig.getApiService().getAllFollowers(userlogin, BuildConfig.KEY)
+        val api = ApiConfig.getApiService().getAllFollowers(userLogin)
         api.enqueue(object : retrofit2.Callback<List<GithubUser>> {
             override fun onResponse(
                 call: Call<List<GithubUser>>,
@@ -96,13 +96,12 @@ class DetailViewModel(mAppk: Application) : ViewModel() {
                 _isLoadingFollower.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
-
         })
     }
 
-    private fun getDetailUserFollowings() {
+    private fun getDetailUserFollowings(userLogin: String) {
         _isLoadingFollowing.value = true
-        val api = ApiConfig.getApiService().getAllFollowings(userlogin, BuildConfig.KEY)
+        val api = ApiConfig.getApiService().getAllFollowings(userLogin)
         api.enqueue(object : retrofit2.Callback<List<GithubUser>> {
             override fun onResponse(
                 call: Call<List<GithubUser>>,
@@ -121,7 +120,6 @@ class DetailViewModel(mAppk: Application) : ViewModel() {
                 _isLoadingFollowing.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
-
         })
     }
 

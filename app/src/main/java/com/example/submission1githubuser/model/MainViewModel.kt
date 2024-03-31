@@ -52,12 +52,12 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun getDataSearch(searchUser: String) {
+    fun getDataSearch(query: String) {
         // Mengatur isLoading menjadi true untuk menampilkan indikator loading
         _isLoading.value = true
 
         // Memanggil metode getUserSearch dari ApiService menggunakan ApiConfig
-        val service = ApiConfig.getApiService().getUserSearch(searchUser, BuildConfig.KEY)
+        val service = ApiConfig.getApiService().getUserSearch(query)
 
         // Melakukan enqueue untuk menjalankan panggilan asinkron ke API
         service.enqueue(object : Callback<SearchUsers> {

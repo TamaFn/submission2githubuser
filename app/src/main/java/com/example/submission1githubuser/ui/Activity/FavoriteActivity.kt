@@ -38,6 +38,7 @@ class FavoriteActivity : AppCompatActivity() {
         binding?.rvUsersFavorite?.setHasFixedSize(true)
 
         val favoriteUserViewModel = obtainViewModel(this)
+
         favoriteUserViewModel.getAllUsers().observe(this) { userList ->
             if (userList.isNotEmpty()) {
                 val adapter = UsersAdapter(userList)
@@ -89,21 +90,21 @@ class FavoriteActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
-            R.id.deleteall -> {
-                MaterialAlertDialogBuilder(this@FavoriteActivity)
-                    .setTitle("Hapus Semua Favorite ?")
-                    .setCancelable(true)
-                    .setIcon(R.drawable.baseline_delete_24)
-                    .setPositiveButton("Hapus") { _, _ ->
-                        viewModel.removeAllUsers()  // <-- Menggunakan viewModel tanpa inisialisasi
-                        Toast.makeText(this, R.string.favorite_remove, Toast.LENGTH_SHORT).show()
-                    }
-                    .setNegativeButton("Batalkan") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .show()
-                true
-            }
+//            R.id.deleteall -> {
+//                MaterialAlertDialogBuilder(this@FavoriteActivity)
+//                    .setTitle("Hapus Semua Favorite ?")
+//                    .setCancelable(true)
+//                    .setIcon(R.drawable.baseline_delete_24)
+//                    .setPositiveButton("Hapus") { _, _ ->
+//                        viewModel.removeAllUsers()
+//                        Toast.makeText(this, R.string.favorite_remove, Toast.LENGTH_SHORT).show()
+//                    }
+//                    .setNegativeButton("Batalkan") { dialog, _ ->
+//                        dialog.dismiss()
+//                    }
+//                    .show()
+//                true
+//            }
 
             else -> super.onOptionsItemSelected(item)
         }

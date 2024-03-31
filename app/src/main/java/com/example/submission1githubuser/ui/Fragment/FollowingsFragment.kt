@@ -30,13 +30,13 @@ class FollowingsFragment : Fragment() {
 
         val detailViewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
 
-        detailViewModel.allfollowings.observe(viewLifecycleOwner, {
+        detailViewModel.allfollowings.observe(viewLifecycleOwner) {
             setUserFollowingData(it)
-        })
+        }
 
-        detailViewModel.isLoadingFollowing.observe(viewLifecycleOwner, {
+        detailViewModel.isLoadingFollowing.observe(viewLifecycleOwner) {
             showLoading(it)
-        })
+        }
 
         return binding.root
     }
@@ -64,8 +64,7 @@ class FollowingsFragment : Fragment() {
                 override fun onItemClicked(data: GithubUser) {
                     val detailViewModel =
                         ViewModelProvider(requireActivity())[DetailViewModel::class.java]
-
-                    detailViewModel.userlogin = data.login.toString()
+                    detailViewModel.setUserLogin(data.login.toString())
                 }
             })
         }
